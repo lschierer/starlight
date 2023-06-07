@@ -12,6 +12,7 @@ import './style/shiki.css';
 import './style/util.css';
 
 // Components — can override built-in CSS, but not user CSS.
+
 import ContentPanel from './components/ContentPanel.astro';
 import FallbackContentNotice from './components/FallbackContentNotice.astro';
 import HeadSEO from './components/HeadSEO.astro';
@@ -85,6 +86,11 @@ const hasHero = Boolean(entry.data.hero);
     </style>
   </head>
   <body>
+  <script>
+    import '@spectrum-web-components/theme/sp-theme.js';
+    import '@spectrum-web-components/theme/src/themes.js';
+  </script>
+  <sp-theme theme="spectrum" color="light" scale="medium" >
     <ThemeProvider />
     <SkipLink {locale} />
     <PageFrame {locale} {hasSidebar}>
@@ -117,5 +123,6 @@ const hasHero = Boolean(entry.data.hero);
         </main>
       </TwoColumnContent>
     </PageFrame>
+    </sp-theme>
   </body>
 </html>
