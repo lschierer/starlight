@@ -1,6 +1,5 @@
 import {html, LitElement} from 'lit';
 import {customElement} from 'lit/decorators.js';
-import {ref} from 'lit/directives/ref.js';
 import {styleMap} from 'lit/directives/style-map.js';
 import '@spectrum-web-components/theme/sp-theme.js';
 import '@spectrum-web-components/theme/src/themes.js';
@@ -62,7 +61,7 @@ export class myTopNav extends LitElement  {
       backgroundColor: 'var(--spectrum-cyan-600)',
       width: '100%',
     }
-
+    let logo = undefined;
     if (config.logo) {
       let err: string | undefined;
       if ('src' in config.logo) {
@@ -76,6 +75,26 @@ export class myTopNav extends LitElement  {
         }
       }
       if (err) throw new Error(err);
+      else {
+        if (config.logo && logos.dark) {
+          logo = html`
+            <img class="${{'dark-only': !('src' in config.logo) }}" alt=${config.logo.alt} src=${logos.dark.src} width=${logos.dark.width} height=${logos.dark.height} />
+          `;
+        } else if (!('src' in config.logo)) {
+          logo = html`
+            <img
+                class="light-only"
+                alt=${config.logo.alt}
+                src=${logos.light?.src}
+                width=${logos.light?.width}
+                height=${logos.light?.height}
+            />
+          `;
+        }
+
+      }
+    } else {
+      logo = config.title;
     }
 
     const _href = withBase(this.locale || '/');
@@ -83,7 +102,7 @@ export class myTopNav extends LitElement  {
     return html`
             <sp-top-nav size="xl" style=${styleMap(styles)}>
               <sp-top-nav-item href='${_href}' >
-                Test
+                ${logo}
               </sp-top-nav-item>
               <sp-top-nav-item>
                 <SocialIcons />
