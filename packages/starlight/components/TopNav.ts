@@ -1,5 +1,6 @@
 import {html, LitElement} from 'lit';
 import {customElement} from 'lit/decorators.js';
+import {ref} from 'lit/directives/ref.js';
 import {styleMap} from 'lit/directives/style-map.js';
 import '@spectrum-web-components/theme/sp-theme.js';
 import '@spectrum-web-components/theme/src/themes.js';
@@ -88,9 +89,26 @@ export class myTopNav extends LitElement  {
                 <SocialIcons />
               </sp-top-nav-item>
               <sp-top-nav-item>
-                <LanguageSelect {locale} />
+                <LanguageSelect ${this.locale} />
               </sp-top-nav-item>
-              <sp-action-menu label="${this.t('themeSelect.accessibleLabel')}" style="margin-inline-start: auto;" quiet=true selects="single" value="auto">
+              <sp-action-menu 
+                  label="${this.t('themeSelect.accessibleLabel')}" 
+                  style="margin-inline-start: auto;" 
+                  quiet=true selects="single" 
+                  value="auto" 
+                  onchange="
+                document.documentElement.dataset.theme =
+                    this.value === 'auto' ? (matchMedia('(prefers-color-scheme: light)').matches
+                        ? 'light'
+                        : 'dark') : this.value;
+                if (typeof localStorage !== 'undefined') {
+                  if (this.value === 'light' || this.value === 'dark') {
+                    localStorage.setItem('starlight-theme', this.value);
+                  } else {
+                    localStorage.removeItem('starlight-theme');
+                  }
+                }
+              ">
                 <sp-icon-settings slot="icon"></sp-icon-settings>
                 <sp-menu-item value="dark">
                   ${this.t('themeSelect.dark')}
@@ -104,42 +122,9 @@ export class myTopNav extends LitElement  {
               </sp-action-menu>
               <slot name="topnav" />
             </sp-top-nav>
-            <script is:inline>
-              StarlightThemeProvider.updatePickers();
-            </script>
+   
 
-            <script>
-              
-                /** Update select menu UI, document theme, and local storage state. */
-                #onThemeChange(theme: Theme): void {
-                  StarlightThemeProvider.updatePickers(theme);
-                  document.documentElement.dataset.theme =
-                      theme === 'auto' ? this.#getPreferredColorScheme() : theme;
-                  this.#storeTheme(theme);
-                }
-
-                /** Store the user’s preference in \`localStorage\`. */
-                #storeTheme(theme: Theme): void {
-                  if (typeof localStorage !== 'undefined') {
-                    if (theme === 'light' || theme === 'dark') {
-                      localStorage.setItem(this.#key, theme);
-                    } else {
-                      localStorage.removeItem(this.#key);
-                    }
-                  }
-                }
-
-                /** Load the user’s preference from \`localStorage\`. */
-                #loadTheme(): Theme {
-                  const theme =
-                      typeof localStorage !== 'undefined' && localStorage.getItem(this.#key);
-                  return this.#parseTheme(theme);
-                }
-              }
-
-              customElements.define('starlight-theme-select', StarlightThemeSelect);
-            </script>
-
+   
     `
   }
 }
