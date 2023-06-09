@@ -93,6 +93,9 @@ export class myTopNav extends LitElement  {
         }
 
       }
+      if(config.title && !(config.logo.replacesTitle)) {
+        logo = logo + ' ' + config.title;
+      }
     } else {
       logo = config.title;
     }
