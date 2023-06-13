@@ -21,7 +21,7 @@ import {
 } from '@spectrum-web-components/menu';
 import '@spectrum-web-components/icons-workflow/icons/sp-icon-settings.js';
 
-import { withBase } from '../utils/base';
+import { pathWithBase } from '../utils/base';
 import { useTranslations } from '../utils/translations';
 import { logos } from 'virtual:starlight/user-images';
 import config from 'virtual:starlight/user-config';
@@ -100,7 +100,7 @@ export class myTopNav extends LitElement  {
       logo = config.title;
     }
 
-    const _href = withBase(this.locale || '/');
+    const _href = pathWithBase(this.locale || '/');
 
     return html`
             <sp-top-nav size="xl" style=${styleMap(styles)}>
