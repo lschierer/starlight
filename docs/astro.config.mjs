@@ -1,6 +1,15 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
+export const locales = {
+  root: { label: 'English', lang: 'en' },
+  de: { label: 'Deutsch', lang: 'de' },
+  es: { label: 'Español', lang: 'es' },
+  ja: { label: '日本語', lang: 'ja' },
+  fr: { label: 'Français', lang: 'fr' },
+  it: { label: 'Italiano', lang: 'it' },
+};
+
 const site = 'https://starlight.astro.build/';
 
 export default defineConfig({
@@ -39,14 +48,7 @@ export default defineConfig({
         },
       ],
       customCss: process.env.NO_GRADIENTS ? [] : ['/src/assets/landing.css'],
-      locales: {
-        root: { label: 'English', lang: 'en' },
-        de: { label: 'Deutsch', lang: 'de' },
-        es: { label: 'Español', lang: 'es' },
-        ja: { label: '日本語', lang: 'ja' },
-        fr: { label: 'Français', lang: 'fr' },
-        it: { label: 'Italiano', lang: 'it' },
-      },
+      locales,
       sidebar: [
         {
           label: 'Start Here',
@@ -73,10 +75,22 @@ export default defineConfig({
               label: 'Environmental Impact',
               link: 'environmental-impact',
               translations: {
+                // de: '',
                 es: 'Documentación ecológica',
                 ja: '環境への負荷',
                 fr: 'Impact environnemental',
                 it: 'Impatto ambientale',
+              },
+            },
+            {
+              label: 'Showcase',
+              link: 'showcase',
+              translations: {
+                // de: '',
+                // es: '',
+                ja: 'ショーケース',
+                // fr: '',
+                // it: '',
               },
             },
           ],
@@ -100,4 +114,5 @@ export default defineConfig({
       ],
     }),
   ],
+  image: { service: { entrypoint: 'astro/assets/services/sharp' } },
 });
